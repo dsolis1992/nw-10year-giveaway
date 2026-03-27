@@ -1,5 +1,8 @@
 {
   "framework": null,
-  "buildCommand": "mkdir -p dist/ig dist/web && cp index.html dist/ && cp index.html dist/ig/index.html && cp index.html dist/web/index.html",
-  "outputDirectory": "dist"
+  "buildCommand": "mkdir -p dist && cp index.html dist/ && cp og-image.jpg dist/ 2>/dev/null || true",
+  "outputDirectory": "dist",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
 }
