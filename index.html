@@ -280,7 +280,29 @@ const end=new Date();end.setDate(end.getDate()+14);
 function tick(){const d=end-new Date();if(d<=0)return;document.getElementById('cd-days').textContent=String(Math.floor(d/864e5)).padStart(2,'0');document.getElementById('cd-hours').textContent=String(Math.floor((d%864e5)/36e5)).padStart(2,'0');document.getElementById('cd-mins').textContent=String(Math.floor((d%36e5)/6e4)).padStart(2,'0');document.getElementById('cd-secs').textContent=String(Math.floor((d%6e4)/1e3)).padStart(2,'0')}
 setInterval(tick,1000);tick();
 
-function handleSubmit(){const n=document.getElementById('f-name').value.trim(),p=document.getElementById('f-phone').value.trim();if(!n||!p){alert('Please enter your name and phone number.');return}document.getElementById('success').classList.add('show')}
+async function handleSubmit(){
+const n=document.getElementById('f-name').value.trim();
+const p=document.getElementById('f-phone').value.trim();
+const e=document.getElementById('f-email').value.trim();
+const y=document.getElementById('f-year').value.trim();
+const mk=document.getElementById('f-make').value.trim();
+const md=document.getElementById('f-model').value.trim();
+const past=document.getElementById('f-past').checked;
+if(!n||!p){alert('Please enter your name and phone number.');return}
+const btn=document.querySelector('.submit-btn');
+btn.textContent='Submitting...';btn.disabled=true;
+const vehicle=[y,mk,md].filter(Boolean).join(' ');
+const src=location.pathname.includes('/ig')?'Instagram Giveaway':'Website Giveaway';
+const notes=['10-Year Anniversary Giveaway Entry',past?'Past NW Customer (bonus entry)':'New Customer','Source: '+src].join('\n');
+try{
+const res=await fetch('https://nw-podium-bot.vercel.app/api/podium-lead',{
+method:'POST',headers:{'Content-Type':'application/json'},
+body:JSON.stringify({name:n,phone:p,email:e||undefined,vehicle:vehicle||undefined,notes:notes})
+});
+if(res.ok){document.getElementById('success').classList.add('show')}
+else{alert('Something went wrong. Please try again.');btn.textContent='Enter to win free tint';btn.disabled=false}
+}catch(err){alert('Network error. Please try again.');btn.textContent='Enter to win free tint';btn.disabled=false}
+}
 </script>
 </body>
 </html>
