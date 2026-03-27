@@ -1,5 +1,5 @@
 {
   "framework": null,
-  "buildCommand": "mkdir -p dist/ig && cp index.html dist/ && cp index.html dist/ig/index.html",
+  "buildCommand": "mkdir -p dist/ig dist/web && cp index.html dist/ && cp index.html dist/ig/index.html && cp index.html dist/web/index.html",
   "outputDirectory": "dist"
 }
