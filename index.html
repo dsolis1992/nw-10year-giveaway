@@ -403,6 +403,12 @@ query:'mutation SubmitHostedForm($organizationToken:ID!,$locationUid:ID,$custome
 variables:{organizationToken:'cad86dab-e47e-4618-992c-35785abd709b',locationUid:LOC_UID,customerPhoneNumber:'+1'+digits,customerName:n,submissionUrl:'https://forms.podium.com/nw-window-tinting',ruleUid:'0db1b732-af01-4eca-b51e-86072e4177c3',formInput:formInput,optInSource:'HOSTED_FORM',formName:'10 Year Giveaway'}})
 });
 
+/* 3. Log to NW Control Panel */
+fetch('https://acuity-shop-board.vercel.app/api/forms/submit',{
+method:'POST',headers:{'Content-Type':'application/json'},
+body:JSON.stringify({name:n,phone:'+1'+digits,email:e||undefined,vehicle:vehicle||undefined,service:'Giveaway Entry',message:noteLines.join(' '),source:'10_year_giveaway'})
+}).catch(function(){});
+
 /* 3. Airtable lead (keep existing) */
 const leadRes=await fetch('https://nw-podium-bot.vercel.app/api/lead',{
 method:'POST',headers:{'Content-Type':'application/json'},
