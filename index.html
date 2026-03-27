@@ -292,14 +292,21 @@ if(!n||!p){alert('Please enter your name and phone number.');return}
 const btn=document.querySelector('.submit-btn');
 btn.textContent='Submitting...';btn.disabled=true;
 const vehicle=[y,mk,md].filter(Boolean).join(' ');
-const src=location.pathname.includes('/ig')?'Instagram Giveaway':'Website Giveaway';
-const notes=['10-Year Anniversary Giveaway Entry',past?'Past NW Customer (bonus entry)':'New Customer','Source: '+src].join('\n');
+const isIG=location.pathname.includes('/ig');
+const src=isIG?'Giveaway - Instagram':'Giveaway - Website';
+const noteLines=['10-Year Anniversary Giveaway Entry',past?'Past NW Customer (bonus entry)':'New Customer','Source: '+src];
 try{
-const res=await fetch('https://nw-podium-bot.vercel.app/api/podium-lead',{
+const [podRes,leadRes]=await Promise.all([
+fetch('https://nw-podium-bot.vercel.app/api/podium-lead',{
 method:'POST',headers:{'Content-Type':'application/json'},
-body:JSON.stringify({name:n,phone:p,email:e||undefined,vehicle:vehicle||undefined,notes:notes})
-});
-if(res.ok){document.getElementById('success').classList.add('show')}
+body:JSON.stringify({name:n,phone:p,email:e||undefined,vehicle:vehicle||undefined,notes:noteLines.join('\n')})
+}),
+fetch('https://nw-podium-bot.vercel.app/api/lead',{
+method:'POST',headers:{'Content-Type':'application/json'},
+body:JSON.stringify({source:src,name:n,phone:p,email:e||undefined,vehicle:vehicle||undefined,notes:noteLines.join('\n')})
+})
+]);
+if(podRes.ok||leadRes.ok){document.getElementById('success').classList.add('show')}
 else{alert('Something went wrong. Please try again.');btn.textContent='Enter to win free tint';btn.disabled=false}
 }catch(err){alert('Network error. Please try again.');btn.textContent='Enter to win free tint';btn.disabled=false}
 }
