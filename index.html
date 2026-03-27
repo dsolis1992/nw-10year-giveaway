@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>10 Cars for 10 Years â NW Window Tinting Anniversary Giveaway</title>
+<title>10 Cars for 10 Years — NW Window Tinting Anniversary Giveaway</title>
 <meta name="description" content="NW Window Tinting is celebrating 10 years by tinting 10 cars for free. Enter for your chance to win.">
-<meta property="og:title" content="10 Cars for 10 Years â NW Window Tinting Giveaway">
+<meta property="og:title" content="10 Cars for 10 Years — NW Window Tinting Giveaway">
 <meta property="og:description" content="We're tinting 10 cars completely free to celebrate a decade in business. Enter now.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://nw-10year-giveaway.vercel.app/">
@@ -56,7 +56,7 @@ pointer-events:none}
 .hero-stats{display:flex;gap:2.5rem;margin-top:2rem;animation:fadeUp 0.6s ease-out 0.5s both}
 .hero-stat .stat-num{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--gold);line-height:1}
 .hero-stat .stat-label{font-size:0.6rem;color:var(--text-light);text-transform:uppercase;letter-spacing:0.12em;margin-top:0.25rem}
-/* RIGHT â FORM CARD */
+/* RIGHT — FORM CARD */
 .hero-right{flex:0 0 440px;max-width:440px;position:relative;z-index:1;animation:formIn 0.8s ease-out 0.2s both}
 @keyframes formIn{from{opacity:0;transform:translateY(30px) scale(0.97)}to{opacity:1;transform:translateY(0) scale(1)}}
 .glass-card{background:rgba(10,14,26,0.7);backdrop-filter:blur(24px);border-radius:var(--radius-lg);padding:2.25rem;position:relative;overflow:hidden;box-shadow:var(--shadow-xl);border:1px solid rgba(0,184,240,0.1)}
@@ -219,7 +219,7 @@ We're celebrating <strong>a decade in business</strong> by tinting
 <div class="form-group"><label>Phone number</label><input type="tel" placeholder="(360) 555-0000" id="f-phone"></div>
 <div class="form-group"><label>Email <span class="optional">(optional)</span></label><input type="email" placeholder="you@email.com" id="f-email"></div>
 <div class="form-group"><label>Vehicle info</label><div class="form-row"><input type="text" placeholder="Year" id="f-year" inputmode="numeric" maxlength="4"><input type="text" placeholder="Make" id="f-make"><input type="text" placeholder="Model" id="f-model"></div></div>
-<div class="form-group"><label class="checkbox-group"><input type="checkbox" id="f-past"><span class="check-label"><strong>I'm a past NW customer</strong> â bonus entry</span></label></div>
+<div class="form-group"><label class="checkbox-group"><input type="checkbox" id="f-past"><span class="check-label"><strong>I'm a past NW customer</strong> — bonus entry</span></label></div>
 <div class="form-group"><label class="checkbox-group"><input type="checkbox" id="f-sms"><span class="check-label">Text me updates and offers from NW Window Tinting</span></label></div>
 <button class="submit-btn" onclick="handleSubmit()">Enter to win free tint</button>
 <div class="form-error" id="form-error"></div>
@@ -236,7 +236,7 @@ We're celebrating <strong>a decade in business</strong> by tinting
 <div class="section-label reveal">How it works</div>
 <h2 class="section-title reveal reveal-delay-1">Three steps to enter</h2>
 <div class="steps">
-<div class="step reveal reveal-delay-1"><div class="step-num">01</div><div class="step-content"><h3>Fill out the form above</h3><p>Name, phone, and your vehicle info. That's it â takes 30 seconds.</p></div></div>
+<div class="step reveal reveal-delay-1"><div class="step-num">01</div><div class="step-content"><h3>Fill out the form above</h3><p>Name, phone, and your vehicle info. That's it — takes 30 seconds.</p></div></div>
 <div class="step reveal reveal-delay-2"><div class="step-num">02</div><div class="step-content"><h3>Get bonus entries</h3><p>Share the giveaway or tag someone who needs tint. Past customers automatically get a bonus entry.</p></div></div>
 <div class="step reveal reveal-delay-3"><div class="step-num">03</div><div class="step-content"><h3>We draw 10 winners</h3><p>Winners announced publicly. Even if you don't win, every entrant gets an exclusive anniversary offer.</p></div></div>
 </div>
@@ -273,7 +273,7 @@ NW Window Tinting reserves the right to modify or cancel the giveaway at any tim
 
 <footer class="footer">
 <div class="footer-logo">NW Window Tinting</div>
-<p>Mill Plain &amp; Fourth Plain â Vancouver, WA<br><a href="tel:3609495059">(360) 949-5059</a><br><br>&copy; 2026 NW Window Tinting. All rights reserved.</p>
+<p>Mill Plain &amp; Fourth Plain — Vancouver, WA<br><a href="tel:3609495059">(360) 949-5059</a><br><br>&copy; 2026 NW Window Tinting. All rights reserved.</p>
 </footer>
 
 <div class="success-overlay" id="success" onclick="dismissSuccess(event)">
@@ -290,7 +290,7 @@ NW Window Tinting reserves the right to modify or cancel the giveaway at any tim
 const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.15,rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
-/* Fix 1: Hardcoded countdown â April 16 2026 7PM Pacific (PDT = UTC-7) */
+/* Fix 1: Hardcoded countdown — April 16 2026 7PM Pacific (PDT = UTC-7) */
 const end=new Date('2026-04-16T19:00:00-07:00');
 function tick(){
 const d=end-new Date();
@@ -300,7 +300,7 @@ document.getElementById('cd-hours').textContent='00';
 document.getElementById('cd-mins').textContent='00';
 document.getElementById('cd-secs').textContent='00';
 var cw=document.getElementById('countdown-wrap');
-cw.insertAdjacentHTML('afterend','<div class="countdown-ended">Giveaway has ended â winners will be announced soon!</div>');
+cw.insertAdjacentHTML('afterend','<div class="countdown-ended">Giveaway has ended — winners will be announced soon!</div>');
 cw.style.display='none';
 return;
 }
@@ -353,11 +353,11 @@ const mk=document.getElementById('f-make').value.trim();
 const md=document.getElementById('f-model').value.trim();
 const past=document.getElementById('f-past').checked;
 
-/* Fix 7: Inline validation â no alert() */
+/* Fix 7: Inline validation — no alert() */
 if(!n){nameEl.classList.add('input-error');showError('Please enter your name.');nameEl.focus();return}
 if(!p){phoneEl.classList.add('input-error');showError('Please enter your phone number.');phoneEl.focus();return}
 
-/* Fix 3: Phone validation â must be 10 digits */
+/* Fix 3: Phone validation — must be 10 digits */
 const digits=p.replace(/\D/g,'');
 if(digits.length!==10){phoneEl.classList.add('input-error');showError('Please enter a valid 10-digit phone number.');phoneEl.focus();return}
 
