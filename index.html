@@ -379,17 +379,36 @@ const src=params.get('src')||(location.pathname.includes('/ig')?'Giveaway - Inst
 const noteLines=['10-Year Anniversary Giveaway Entry',past?'Past NW Customer (bonus entry)':'New Customer','Source: '+src];
 
 try{
-const [podRes,leadRes]=await Promise.all([
-fetch('https://nw-podium-bot.vercel.app/api/podium-lead',{
-method:'POST',headers:{'Content-Type':'application/json'},
-body:JSON.stringify({name:n,phone:digits,email:e||undefined,vehicle:vehicle||undefined,notes:noteLines.join('\n')})
-}),
-fetch('https://nw-podium-bot.vercel.app/api/lead',{
+/* Podium GraphQL — same method as acuity-shop-board forms */
+const PODIUM_GQL='https://mind-flayer.podium.com//graphql';
+const LOC_UID='4fd2b9b1-68c9-5948-b8ef-c5b30864ca5e';
+
+/* 1. Opt-in */
+await fetch(PODIUM_GQL,{method:'POST',headers:{'Content-Type':'application/json'},
+body:JSON.stringify({operationName:'optInContact',
+query:'mutation optInContact($channelUniqueIdentifier:String!,$contactName:String,$optInSource:OptInSource,$locationUid:ID){marketingOptIn(customerPhoneNumber:$channelUniqueIdentifier,customerName:$contactName,optInSource:$optInSource,locationUid:$locationUid){status __typename}}',
+variables:{channelUniqueIdentifier:'+1'+digits,contactName:n,optInSource:'HOSTED_FORM',locationUid:LOC_UID}})
+}).catch(function(){});
+
+/* 2. Submit hosted form */
+var formInput=[];
+if(e)formInput.push({prompt:'Email',attributeValue:e,values:e});
+if(vehicle)formInput.push({prompt:'Vehicle',attributeValue:vehicle,values:vehicle});
+formInput.push({prompt:'Message',attributeValue:noteLines.join(' | '),values:noteLines.join(' | ')});
+formInput.push({prompt:'Lead Source',attributeValue:src,values:src});
+
+const podRes=await fetch(PODIUM_GQL,{method:'POST',headers:{'Content-Type':'application/json'},
+body:JSON.stringify({operationName:'SubmitHostedForm',
+query:'mutation SubmitHostedForm($organizationToken:ID!,$locationUid:ID,$customerPhoneNumber:String!,$customerName:String!,$submissionUrl:String,$ruleUid:ID,$formInput:[HostedFormInput],$optInSource:OptInSource,$formName:String){submitHostedForm(organizationToken:$organizationToken,locationUid:$locationUid,customerPhoneNumber:$customerPhoneNumber,customerName:$customerName,submissionUrl:$submissionUrl,ruleUid:$ruleUid,formInput:$formInput,optInSource:$optInSource,formName:$formName){status __typename}}',
+variables:{organizationToken:'cad86dab-e47e-4618-992c-35785abd709b',locationUid:LOC_UID,customerPhoneNumber:'+1'+digits,customerName:n,submissionUrl:'https://forms.podium.com/nw-window-tinting',ruleUid:'0db1b732-af01-4eca-b51e-86072e4177c3',formInput:formInput,optInSource:'HOSTED_FORM',formName:'10 Year Giveaway'}})
+});
+
+/* 3. Airtable lead (keep existing) */
+const leadRes=await fetch('https://nw-podium-bot.vercel.app/api/lead',{
 method:'POST',headers:{'Content-Type':'application/json'},
 body:JSON.stringify({source:src,name:n,phone:digits,email:e||undefined,vehicle:vehicle||undefined,notes:noteLines.join('\n')})
-})
-]);
-/* Fix 5: Both must succeed */
+});
+
 if(podRes.ok||leadRes.ok){
 localStorage.setItem('nw-giveaway-entered','true');
 document.getElementById('success').classList.add('show');
