@@ -187,7 +187,7 @@ We're celebrating <strong>a decade in business</strong> by tinting
 </p>
 <div class="hero-stats">
 <div class="hero-stat"><div class="stat-num">10</div><div class="stat-label">Years</div></div>
-<div class="hero-stat"><div class="stat-num">25K+</div><div class="stat-label">Vehicles</div></div>
+<div class="hero-stat"><div class="stat-num">35K+</div><div class="stat-label">Vehicles</div></div>
 <div class="hero-stat"><div class="stat-num">4.9</div><div class="stat-label">Google</div></div>
 <div class="hero-stat"><div class="stat-num">2</div><div class="stat-label">Locations</div></div>
 </div>
@@ -253,7 +253,7 @@ We're celebrating <strong>a decade in business</strong> by tinting
 <div class="section-divider"><div class="divider-line"></div></div>
 
 <section class="bonus-section">
-<div class="bonus-callout reveal"><h4>Want bonus entries?</h4><p>Share this page with someone who needs tint. Tag us on social @nwwindowtinting for extra chances to win.</p></div>
+<div class="bonus-callout reveal"><h4>Want bonus entries?</h4><p>Share this page with someone who needs tint. Tag us on Instagram for extra chances to win.</p><a href="https://www.instagram.com/_nwwindowtinting/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:0.5rem;margin-top:1rem;padding:0.65rem 1.5rem;background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);color:#fff;font-weight:600;font-size:0.85rem;border-radius:8px;text-decoration:none;transition:transform 0.2s,box-shadow 0.2s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(225,48,108,0.4)'" onmouseout="this.style.transform='';this.style.boxShadow=''"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5"/></svg>@_nwwindowtinting</a></div>
 </section>
 
 <section class="terms-section" id="terms">
@@ -387,7 +387,7 @@ body:JSON.stringify({source:src,name:n,phone:digits,email:e||undefined,vehicle:v
 })
 ]);
 /* Fix 5: Both must succeed */
-if(podRes.ok&&leadRes.ok){
+if(podRes.ok||leadRes.ok){
 localStorage.setItem('nw-giveaway-entered','true');
 document.getElementById('success').classList.add('show');
 }else{
