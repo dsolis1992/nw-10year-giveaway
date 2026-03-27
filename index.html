@@ -295,6 +295,7 @@ const end=new Date('2026-04-16T19:00:00-07:00');
 function tick(){
 const d=end-new Date();
 if(d<=0){
+clearInterval(_timer);
 document.getElementById('cd-days').textContent='00';
 document.getElementById('cd-hours').textContent='00';
 document.getElementById('cd-mins').textContent='00';
@@ -302,6 +303,9 @@ document.getElementById('cd-secs').textContent='00';
 var cw=document.getElementById('countdown-wrap');
 cw.insertAdjacentHTML('afterend','<div class="countdown-ended">Giveaway has ended — winners will be announced soon!</div>');
 cw.style.display='none';
+document.querySelector('.submit-btn').disabled=true;
+document.querySelector('.submit-btn').textContent='Giveaway ended';
+document.querySelectorAll('.glass-card input,.glass-card select,.glass-card textarea').forEach(function(el){el.disabled=true;});
 return;
 }
 document.getElementById('cd-days').textContent=String(Math.floor(d/864e5)).padStart(2,'0');
@@ -309,7 +313,7 @@ document.getElementById('cd-hours').textContent=String(Math.floor((d%864e5)/36e5
 document.getElementById('cd-mins').textContent=String(Math.floor((d%36e5)/6e4)).padStart(2,'0');
 document.getElementById('cd-secs').textContent=String(Math.floor((d%6e4)/1e3)).padStart(2,'0');
 }
-setInterval(tick,1000);tick();
+const _timer=setInterval(tick,1000);tick();
 
 /* Fix 14: Duplicate submission prevention */
 if(localStorage.getItem('nw-giveaway-entered')==='true'){
@@ -336,7 +340,9 @@ document.getElementById('success').classList.remove('show');
 }
 
 /* Main submit */
+let _submitted=false;
 async function handleSubmit(){
+if(_submitted)return;
 /* Fix 6: Honeypot bot check */
 if(document.getElementById('f-website').value)return;
 
@@ -377,7 +383,7 @@ const noteLines=['10-Year Anniversary Giveaway Entry',past?'Past NW Customer (bo
 
 try{
 /* Podium GraphQL — same method as acuity-shop-board forms */
-const PODIUM_GQL='https://mind-flayer.podium.com//graphql';
+const PODIUM_GQL='https://mind-flayer.podium.com/graphql';
 const LOC_UID='4fd2b9b1-68c9-5948-b8ef-c5b30864ca5e';
 
 /* 1. Opt-in */
@@ -385,7 +391,7 @@ await fetch(PODIUM_GQL,{method:'POST',headers:{'Content-Type':'application/json'
 body:JSON.stringify({operationName:'optInContact',
 query:'mutation optInContact($channelUniqueIdentifier:String!,$contactName:String,$optInSource:OptInSource,$locationUid:ID){marketingOptIn(customerPhoneNumber:$channelUniqueIdentifier,customerName:$contactName,optInSource:$optInSource,locationUid:$locationUid){status __typename}}',
 variables:{channelUniqueIdentifier:'+1'+digits,contactName:n,optInSource:'HOSTED_FORM',locationUid:LOC_UID}})
-}).catch(function(){});
+}).catch(function(err){console.error('Podium opt-in failed:',err)});
 
 /* 2. Submit hosted form */
 var formInput=[];
@@ -404,7 +410,7 @@ variables:{organizationToken:'cad86dab-e47e-4618-992c-35785abd709b',locationUid:
 fetch('https://acuity-shop-board.vercel.app/api/forms/submit',{
 method:'POST',headers:{'Content-Type':'application/json'},
 body:JSON.stringify({name:n,phone:'+1'+digits,email:e||undefined,vehicle:vehicle||undefined,service:'Giveaway Entry',message:noteLines.join(' '),source:'10_year_giveaway'})
-}).catch(function(){});
+}).catch(function(err){console.error('Shop board submission failed:',err)});
 
 /* 3. Airtable lead (keep existing) */
 const leadRes=await fetch('https://nw-podium-bot.vercel.app/api/lead',{
@@ -412,8 +418,9 @@ method:'POST',headers:{'Content-Type':'application/json'},
 body:JSON.stringify({source:src,name:n,phone:digits,email:e||undefined,vehicle:vehicle||undefined,notes:noteLines.join('\n')})
 });
 
-if(podRes.ok||leadRes.ok){
+if(podRes.ok&&leadRes.ok){
 localStorage.setItem('nw-giveaway-entered','true');
+_submitted=true;
 document.getElementById('success').classList.add('show');
 }else{
 showError('Something went wrong. Please try again.');
