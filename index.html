@@ -293,7 +293,7 @@ const btn=document.querySelector('.submit-btn');
 btn.textContent='Submitting...';btn.disabled=true;
 const vehicle=[y,mk,md].filter(Boolean).join(' ');
 const isIG=location.pathname.includes('/ig');
-const src=isIG?'Giveaway - Instagram':'Giveaway - Website';
+const src=isIG?'Giveaway - Instagram':'Giveaway - Bulk Text';
 const noteLines=['10-Year Anniversary Giveaway Entry',past?'Past NW Customer (bonus entry)':'New Customer','Source: '+src];
 try{
 const [podRes,leadRes]=await Promise.all([
