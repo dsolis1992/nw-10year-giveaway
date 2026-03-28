@@ -1,8 +1,18 @@
 {
   "framework": null,
-  "buildCommand": "mkdir -p dist && cp index.html dist/ && cp og-image.jpg dist/ 2>/dev/null || true",
+  "buildCommand": "mkdir -p dist && cp index.html dist/ && cp og-image.jpg dist/ 2>/dev/null || true && cp widget.js dist/ 2>/dev/null || true",
   "outputDirectory": "dist",
+  "headers": [
+    {
+      "source": "/widget.js",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Cache-Control", "value": "public, max-age=300" }
+      ]
+    }
+  ],
   "rewrites": [
+    { "source": "/widget.js", "destination": "/widget.js" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
