@@ -1,32 +1,59 @@
 (function(){
-  if(document.getElementById('nw-giveaway-widget')) return;
+  if(document.getElementById('nw-giveaway-banner')) return;
 
   var style = document.createElement('style');
   style.textContent = [
-    '#nw-giveaway-widget{position:fixed;bottom:20px;right:20px;z-index:99999;text-decoration:none;display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#001d52,#002360);border:2px solid #00b8f0;border-radius:14px;padding:12px 20px 12px 16px;box-shadow:0 0 20px rgba(0,184,240,0.3),0 4px 15px rgba(0,0,0,0.3);animation:nw-gw-float 3s ease-in-out infinite;cursor:pointer;transition:all 0.3s ease;font-family:-apple-system,BlinkMacSystemFont,sans-serif}',
-    '#nw-giveaway-widget:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 0 30px rgba(0,184,240,0.5),0 8px 25px rgba(0,0,0,0.4);border-color:#f9cb14}',
-    '#nw-giveaway-widget .nw-gw-icon{font-size:28px;filter:drop-shadow(0 0 6px rgba(249,203,20,0.6))}',
-    '#nw-giveaway-widget .nw-gw-text{display:flex;flex-direction:column}',
-    '#nw-giveaway-widget .nw-gw-title{font-size:13px;font-weight:800;letter-spacing:1.2px;color:#f9cb14;text-shadow:0 0 10px rgba(249,203,20,0.4);line-height:1.2}',
-    '#nw-giveaway-widget .nw-gw-sub{font-size:11px;color:#e0f6ff;margin-top:2px;line-height:1.3}',
-    '#nw-giveaway-widget .nw-gw-arrow{color:#00b8f0;font-size:18px;margin-left:4px;transition:transform 0.3s}',
-    '#nw-giveaway-widget:hover .nw-gw-arrow{transform:translateX(3px);color:#f9cb14}',
-    '#nw-giveaway-widget::before{content:"";position:absolute;inset:-2px;border-radius:15px;background:linear-gradient(90deg,transparent,rgba(0,184,240,0.4),transparent);z-index:-1;animation:nw-gw-sweep 3s linear infinite}',
-    '@keyframes nw-gw-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}',
-    '@keyframes nw-gw-sweep{0%{opacity:0;transform:translateX(-100%)}50%{opacity:1}100%{opacity:0;transform:translateX(100%)}}'
+    '#nw-giveaway-banner{display:block;width:100%;text-decoration:none;background:linear-gradient(135deg,#001d52 0%,#002360 40%,#0a2f6e 100%);border-top:2px solid rgba(0,184,240,0.3);border-bottom:2px solid rgba(0,184,240,0.3);padding:18px 24px;position:relative;overflow:hidden;cursor:pointer;transition:all .3s ease;font-family:Outfit,-apple-system,BlinkMacSystemFont,sans-serif}',
+    '#nw-giveaway-banner:hover{background:linear-gradient(135deg,#001d52 0%,#00296b 40%,#0a3580 100%)}',
+    '#nw-giveaway-banner::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(0,184,240,0.08),transparent);animation:nw-gb-sweep 4s linear infinite}',
+    '#nw-giveaway-banner::after{content:"";position:absolute;top:50%;left:50%;width:600px;height:100px;transform:translate(-50%,-50%);background:radial-gradient(ellipse,rgba(249,203,20,0.06) 0%,transparent 70%);pointer-events:none}',
+    '@keyframes nw-gb-sweep{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}',
+    '#nw-giveaway-banner .nw-gb-inner{display:flex;align-items:center;justify-content:center;gap:14px;position:relative;z-index:1;max-width:900px;margin:0 auto}',
+    '#nw-giveaway-banner .nw-gb-icon{font-size:26px;filter:drop-shadow(0 0 8px rgba(249,203,20,0.5));animation:nw-gb-pulse 2s ease-in-out infinite}',
+    '@keyframes nw-gb-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}',
+    '#nw-giveaway-banner .nw-gb-text{display:flex;flex-direction:column;align-items:flex-start;gap:2px}',
+    '#nw-giveaway-banner .nw-gb-title{font-size:15px;font-weight:800;letter-spacing:2px;color:#f9cb14;text-shadow:0 0 12px rgba(249,203,20,0.35);line-height:1.2;text-transform:uppercase}',
+    '#nw-giveaway-banner .nw-gb-sub{font-size:12px;font-weight:400;color:rgba(224,246,255,0.8);line-height:1.3}',
+    '#nw-giveaway-banner .nw-gb-cta{display:inline-flex;align-items:center;gap:6px;background:rgba(249,203,20,0.12);border:1px solid rgba(249,203,20,0.35);border-radius:100px;padding:8px 20px;font-size:12px;font-weight:600;color:#f9cb14;letter-spacing:.8px;text-transform:uppercase;transition:all .25s ease;white-space:nowrap}',
+    '#nw-giveaway-banner:hover .nw-gb-cta{background:rgba(249,203,20,0.2);border-color:rgba(249,203,20,0.6);transform:translateX(3px)}',
+    '#nw-giveaway-banner .nw-gb-cta svg{width:14px;height:14px;stroke:#f9cb14;stroke-width:2;fill:none;transition:transform .25s}',
+    '#nw-giveaway-banner:hover .nw-gb-cta svg{transform:translateX(3px)}',
+    '@media(max-width:767px){',
+    '  #nw-giveaway-banner{padding:14px 16px}',
+    '  #nw-giveaway-banner .nw-gb-inner{gap:10px}',
+    '  #nw-giveaway-banner .nw-gb-icon{font-size:22px}',
+    '  #nw-giveaway-banner .nw-gb-title{font-size:12px;letter-spacing:1.5px}',
+    '  #nw-giveaway-banner .nw-gb-sub{font-size:10px}',
+    '  #nw-giveaway-banner .nw-gb-cta{padding:6px 14px;font-size:10px}',
+    '}'
   ].join('\n');
   document.head.appendChild(style);
 
-  var a = document.createElement('a');
-  a.id = 'nw-giveaway-widget';
-  a.href = 'https://nw-10year-giveaway.vercel.app/web';
-  a.target = '_blank';
-  a.rel = 'noopener';
-  a.innerHTML = '<span class="nw-gw-icon">&#127942;</span>'
-    + '<span class="nw-gw-text">'
-    + '<span class="nw-gw-title">10-YEAR GIVEAWAY</span>'
-    + '<span class="nw-gw-sub">10 free full-car tints &mdash; Enter now!</span>'
+  var banner = document.createElement('a');
+  banner.id = 'nw-giveaway-banner';
+  banner.href = 'https://nw-10year-giveaway.vercel.app/web';
+  banner.target = '_blank';
+  banner.rel = 'noopener';
+  banner.innerHTML = '<div class="nw-gb-inner">'
+    + '<span class="nw-gb-icon">&#127942;</span>'
+    + '<span class="nw-gb-text">'
+    + '<span class="nw-gb-title">10-Year Anniversary Giveaway</span>'
+    + '<span class="nw-gb-sub">10 free full-car window tints &mdash; no purchase needed</span>'
     + '</span>'
-    + '<span class="nw-gw-arrow">&#8250;</span>';
-  document.body.appendChild(a);
+    + '<span class="nw-gb-cta">Enter Now <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>'
+    + '</div>';
+
+  // Insert between hero and about section
+  var about = document.querySelector('.nw-about');
+  var wave = document.querySelector('.nw-wave');
+  if(about) {
+    about.parentNode.insertBefore(banner, about);
+  } else if(wave) {
+    wave.parentNode.insertBefore(banner, wave.nextSibling);
+  } else {
+    // Fallback: append after the hero
+    var hero = document.querySelector('.nw-hero');
+    if(hero) hero.parentNode.insertBefore(banner, hero.nextSibling);
+    else document.body.appendChild(banner);
+  }
 })();
